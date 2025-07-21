@@ -1,0 +1,128 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f7fa;
+  color: #222;
+  line-height: 1.6;
+}
+
+.header {
+  background-image: linear-gradient(
+      rgba(18, 18, 18, 0.8),
+      rgba(18, 18, 18, 0.9)
+    ),
+    url(fundo.jpg);
+  background-color: #0f172a;
+  color: #fff;
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.header .logo {
+  max-width: 120px;
+  height: auto;
+  margin-bottom: 1rem;
+}
+
+.main-title {
+  font-size: 2.5rem;
+}
+
+.slogan {
+  font-size: 1.1rem;
+  color: #94a3b8;
+}
+
+.banner img {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+}
+
+section {
+  padding: 3rem 1rem;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.description h2,
+.schedule h2,
+.details h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #0f172a;
+}
+
+.talks {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.talk {
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  transition: transform 0.3s;
+}
+
+.talk:hover {
+  transform: translateY(-5px);
+}
+
+.talk img {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 1rem;
+}
+
+.details p {
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.btn {
+  display: inline-block;
+  margin-top: 1rem;
+  background-color: #0ea5e9;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.btn:hover {
+  background-color: #0284c7;
+}
+
+.footer {
+  background-color: #0f172a;
+  color: #cbd5e1;
+  text-align: center;
+  padding: 2rem 1rem;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 600px) {
+  .main-title {
+    font-size: 2rem;
+  }
+
+  .talks {
+    grid-template-columns: 1fr;
+  }
+
+  .btn {
+    width: 100%;
+    text-align: center;
+  }
+}

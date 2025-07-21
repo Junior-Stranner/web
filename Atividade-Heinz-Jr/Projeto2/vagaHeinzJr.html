@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vaga de Emprego</title>
+    <link rel="stylesheet" href="vagaHeinzJr.css" />
+  </head>
+  <body>
+    <h2>Trabalhe Conosco</h2>
+
+    <form>
+      <label for="nome">Nome:</label>
+      <input
+        type="text"
+        id="nome"
+        name="nome"
+        placeholder="João Lima"
+        required
+      />
+      <br />
+
+      <label for="email">Email:</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        required
+        placeholder="exemplo@outlook.com"
+        pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+      />
+      <br />
+
+      <label for="areaDeInteresse">Área de Interesse:</label>
+      <select id="areaDeInteresse" name="areaDeInteresse" required>
+        <option value="desenvolvimento">Desenvolvimento</option>
+        <option value="design">Design</option>
+        <option value="suporte">Suporte</option>
+        <option value="comercial">Comercial</option>
+      </select>
+      <br />
+
+      <label for="experiencia">Nível de Experiência:</label>
+      <select id="experiencia" name="experiencia" required>
+        <option value="junior">Júnior</option>
+        <option value="pleno">Pleno</option>
+        <option value="senior">Sênior</option>
+      </select>
+      <br />
+
+      <label for="horario">Disponibilidade de Horário:</label>
+      <textarea
+        id="horario"
+        name="horario"
+        required
+        rows="3"
+        placeholder="Sua disponibilidade para entrevista"
+      ></textarea>
+      <br />
+
+      <label for="cartaApresentacao">Carta de Apresentação:</label>
+      <textarea
+        id="cartaApresentacao"
+        name="cartaApresentacao"
+        required
+        rows="3"
+        placeholder="Escreva uma breve carta de apresentação..."
+      ></textarea>
+      <br />
+
+      <label for="curriculo">URL do Currículo (começando com https://):</label>
+      <input
+        type="url"
+        id="curriculo"
+        name="curriculo"
+        pattern="https://.*"
+        placeholder="https://exemplo.com/meucurriculo"
+        required
+      />
+      <br /><br />
+
+      <button class="button" type="submit">Enviar</button>
+    </form>
+  </body>
+</html>

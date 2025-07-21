@@ -1,0 +1,10 @@
+.menu {
+  display: flex;
+  justify-content: space-around;
+  background-color: #ddd;
+}
+
+.menu a {
+  padding: 10px;
+  text-decoration: none;
+}
