@@ -1,24 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Aula com Github</title>
+    <title>Cadastro de Cliente</title>
+    <link rel="stylesheet" href="/css/stylee.css" />
   </head>
   <body>
-    <h1>Bem vindo a aula de Github</h1>
-    <p>Essa é uma aula de como usar o Github</p>
+    <h2>Cadastro de Cliente</h2>
 
-    <h2>Conteúdo da Aula</h2>
+    <form id="form-cliente">
+      <input type="text" id="nome" placeholder="Nome do cliente" required />
+      <input type="email" id="email" placeholder="E-mail do cliente" required />
+      <button type="submit">Cadastrar</button>
+    </form>
 
-    <ul>
-      <li>Comandos Básicos</li>
-      <li>Trabalhando com repositórios no github</li>
-      <li>Colaboração e pull Requests</li>
-      <li>Resolução de conflitos</li>
-      <li>Branches e Merges</li>
-      <li>Boas Práticas no uso do git</li>
-      <li>Exercicios práticos</li>
-    </ul>
+    <h3>Lista de Clientes Cadastrados:</h3>
+    <div id="lista-clientes"></div>
+
+    <script src="/js/index.js"></script>
   </body>
 </html>
