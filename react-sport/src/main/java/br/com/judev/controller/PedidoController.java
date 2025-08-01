@@ -19,10 +19,21 @@ public class PedidoController {
 
     public boolean adicionarItem(Produto produto, int quantidade) {
         if (produto != null && quantidade > 0) {
-            // Verifica se o produto já está no carrinho
+            if (produto.getEstoque() < quantidade) {
+                System.out.println("Erro: Estoque insuficiente para " + produto.getNome() +
+                        ". Estoque disponível: " + produto.getEstoque());
+                return false;
+            }
+            //aqui é verificado se o produto está no carrinho
             for (ItemCarrinho item : carrinho) {
                 if (item.getProduto().getCodigo().equals(produto.getCodigo())) {
-                    item.setQuantidade(item.getQuantidade() + quantidade);
+                    int novaQuantidade = item.getQuantidade() + quantidade;
+                    if (produto.getEstoque() < novaQuantidade) {
+                        System.out.println("Erro: Estoque insuficiente para adicionar mais " + produto.getNome() +
+                                ". Estoque disponível: " + (produto.getEstoque() - item.getQuantidade()));
+                        return false;
+                    }
+                    item.setQuantidade(novaQuantidade);
                     return true;
                 }
             }
@@ -44,6 +55,21 @@ public class PedidoController {
     public Pedido finalizarPedido(FormaPagamento formaPagamento) {
         if (carrinho.isEmpty()) {
             return null;
+        }
+        // Primeiro verifica se todos os itens ainda têm estoque suficiente
+        for (ItemCarrinho item : carrinho) {
+            Produto produto = item.getProduto();
+            if (produto.getEstoque() < item.getQuantidade()) {
+                System.out.println("Erro: Estoque insuficiente para " + produto.getNome() +
+                        ". Estoque disponível: " + produto.getEstoque() +
+                        ", quantidade solicitada: " + item.getQuantidade());
+                return null;
+            }
+        }
+
+        // Atualizando o estoque
+        for (ItemCarrinho item : carrinho) {
+            produtoController.atualizarEstoque(item.getProduto().getCodigo(), item.getQuantidade());
         }
 
         double total = calcularTotal();

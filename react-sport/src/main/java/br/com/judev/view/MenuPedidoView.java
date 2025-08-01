@@ -92,19 +92,28 @@ public class MenuPedidoView {
             return;
         }
 
+        System.out.println("Estoque disponível: " + produto.getEstoque());
         System.out.print("Digite a quantidade: ");
-        int quantidade;
+        int quantidade = Integer.parseInt(in.nextLine());
         try {
-            quantidade = Integer.parseInt(in.nextLine());
-        } catch (NumberFormatException e) {
-            System.out.println("Quantidade inválida.");
-            return;
-        }
+            if (quantidade <= 0) {
+                System.out.println(" Quantidade deve ser maior que zero.");
+                return;
+            }
 
-        if (pedidoController.adicionarItem(produto, quantidade)) {
-            System.out.printf("%d x %s adicionado(s) ao carrinho.%n", quantidade, produto.getNome());
-        } else {
-            System.out.println("Não foi possível adicionar o produto ao carrinho.");
+            if (quantidade > produto.getEstoque()) {
+                System.out.println(" Estoque insuficiente. Disponível: " + produto.getEstoque());
+                return;
+            }
+
+            if (pedidoController.adicionarItem(produto, quantidade)) {
+                System.out.printf(" %d x %s adicionado(s) ao carrinho.%n", quantidade, produto.getNome());
+            } else {
+                System.out.println(" Falha ao adicionar produto ao carrinho.");
+            }
+
+        } catch (NumberFormatException e) {
+            System.out.println("Quantidade inválida. Digite um número inteiro.");
         }
     }
 
