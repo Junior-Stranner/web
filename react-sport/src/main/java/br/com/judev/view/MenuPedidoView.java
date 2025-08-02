@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Scanner;
 
 public class MenuPedidoView {
-    private final Scanner in = new Scanner(System.in);
-    private final ProdutoController produtoController;
-    private final PedidoController pedidoController;
+    private Scanner in = new Scanner(System.in);
+    private ProdutoController produtoController;
+    private PedidoController pedidoController;
 
     public MenuPedidoView(ProdutoController produtoController, PedidoController pedidoController) {
         this.produtoController = produtoController;
@@ -86,6 +86,7 @@ public class MenuPedidoView {
                     + produto.getPreco() + " [Estoque: " + produto.getEstoque() + "]");
         }
 
+        System.out.println("\nVocê pode escolher um produto para adicionar ao carrinho e iniciar sua compra.");
         System.out.print("\nDigite o código do produto para adicionar ao carrinho (ou 0 para cancelar): ");
         String codigo = in.nextLine();
 
@@ -119,7 +120,6 @@ public class MenuPedidoView {
         if (confirmacao.equalsIgnoreCase("s")) {
             pedidoController.adicionarItem(selecionado, quantidadeProduto);
             produtoController.baixarEstoque(codigo, quantidadeProduto);
-
             MenuCarrinhoView menuCarrinhoView = new MenuCarrinhoView(pedidoController, produtoController);
             menuCarrinhoView.exibirMenuCarrinho();
             System.out.println("Produto adicionado ao carrinho com sucesso!");

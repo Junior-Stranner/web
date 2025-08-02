@@ -9,9 +9,9 @@ import java.util.Scanner;
 
 public class MenuPrincipalView {
     private static final Scanner in = new Scanner(System.in);
-    private static ProdutoController produtoController;
-    private static ClienteController clienteController;
-    private static PedidoController pedidoController;
+    private ProdutoController produtoController;
+    private ClienteController clienteController;
+    private PedidoController pedidoController;
 
     public MenuPrincipalView(ProdutoController produtoController, ClienteController clienteController , PedidoController pedidoController) {
         this.produtoController = produtoController;
@@ -45,7 +45,7 @@ public class MenuPrincipalView {
         } while (opPrincipal != 0);
     }
 
-    private static void cadastrarCliente() {
+    private void cadastrarCliente() {
         System.out.println("\n--- Cadastro de Cliente ---");
         System.out.print("Nome: ");
         String nome = in.nextLine();
@@ -64,7 +64,7 @@ public class MenuPrincipalView {
         clienteController.cadastrarCliente(novoCliente);
     }
 
-    private static  void fazerLogin() {
+    private void fazerLogin() {
         System.out.println("\n--- Login ---");
         System.out.print("Email: ");
         String email = in.nextLine();
@@ -75,7 +75,6 @@ public class MenuPrincipalView {
 
         if (logado) {
             System.out.println("Login realizado com sucesso!");
-
             MenuPedidoView menuPedidoView = new MenuPedidoView(produtoController, pedidoController);
             menuPedidoView.exibirMenuProduto();
         } else {
