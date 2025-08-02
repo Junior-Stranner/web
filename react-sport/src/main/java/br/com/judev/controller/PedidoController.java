@@ -1,19 +1,21 @@
 package br.com.judev.controller;
 
 import br.com.judev.model.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class PedidoController {
-    private List<ItemCarrinho> carrinho;
-    private List<Pedido> historicoPedidos;
-    private ProdutoController produtoController;
+    private final List<ItemCarrinho> carrinho = new ArrayList<>();
+    private final List<Pedido> historicoPedidos = new ArrayList<>();
+    private final ProdutoController produtoController;
     private Cliente clienteAtual;
 
-    public PedidoController(ProdutoController produtoController, Cliente cliente) {
-        this.carrinho = new ArrayList<>();
-        this.historicoPedidos = new ArrayList<>();
+    public PedidoController(ProdutoController produtoController) {
         this.produtoController = produtoController;
+    }
+
+    public void setClienteAtual(Cliente cliente) {
         this.clienteAtual = cliente;
     }
 
@@ -24,7 +26,7 @@ public class PedidoController {
                         ". Estoque disponível: " + produto.getEstoque());
                 return false;
             }
-            //aqui é verificado se o produto está no carrinho
+
             for (ItemCarrinho item : carrinho) {
                 if (item.getProduto().getCodigo().equals(produto.getCodigo())) {
                     int novaQuantidade = item.getQuantidade() + quantidade;
@@ -37,7 +39,7 @@ public class PedidoController {
                     return true;
                 }
             }
-            // Se não encontrou, adiciona novo item
+
             carrinho.add(new ItemCarrinho(produto, quantidade));
             return true;
         }
@@ -56,7 +58,7 @@ public class PedidoController {
         if (carrinho.isEmpty()) {
             return null;
         }
-        // Primeiro verifica se todos os itens ainda têm estoque suficiente
+
         for (ItemCarrinho item : carrinho) {
             Produto produto = item.getProduto();
             if (produto.getEstoque() < item.getQuantidade()) {
@@ -67,9 +69,8 @@ public class PedidoController {
             }
         }
 
-        // Atualizando o estoque
         for (ItemCarrinho item : carrinho) {
-            produtoController.atualizarEstoque(item.getProduto().getCodigo(), item.getQuantidade());
+            produtoController.baixarEstoque(item.getProduto().getCodigo(), item.getQuantidade());
         }
 
         double total = calcularTotal();

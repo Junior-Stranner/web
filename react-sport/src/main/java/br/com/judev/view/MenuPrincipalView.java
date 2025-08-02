@@ -1,6 +1,7 @@
 package br.com.judev.view;
 
 import br.com.judev.controller.ClienteController;
+import br.com.judev.controller.PedidoController;
 import br.com.judev.controller.ProdutoController;
 import br.com.judev.model.Cliente;
 
@@ -10,10 +11,12 @@ public class MenuPrincipalView {
     private static final Scanner in = new Scanner(System.in);
     private static ProdutoController produtoController;
     private static ClienteController clienteController;
+    private static PedidoController pedidoController;
 
-    public MenuPrincipalView(ProdutoController produtoController, ClienteController clienteController) {
+    public MenuPrincipalView(ProdutoController produtoController, ClienteController clienteController , PedidoController pedidoController) {
         this.produtoController = produtoController;
         this.clienteController = clienteController;
+        this.pedidoController = pedidoController;
     }
 
     public void exibirMenuCliente() {
@@ -72,7 +75,9 @@ public class MenuPrincipalView {
 
         if (logado) {
             System.out.println("Login realizado com sucesso!");
-            new MenuProdutoView(produtoController).exibirMenuProduto();
+
+            MenuPedidoView menuPedidoView = new MenuPedidoView(produtoController, pedidoController);
+            menuPedidoView.exibirMenuProduto();
         } else {
             System.out.println("Email ou senha incorretos.");
         }

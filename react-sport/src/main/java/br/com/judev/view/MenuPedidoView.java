@@ -2,29 +2,27 @@ package br.com.judev.view;
 
 import br.com.judev.controller.PedidoController;
 import br.com.judev.controller.ProdutoController;
-import br.com.judev.model.*;
+import br.com.judev.model.Produto;
+
 import java.util.List;
 import java.util.Scanner;
 
 public class MenuPedidoView {
-    private static final Scanner in = new Scanner(System.in);
-    private static PedidoController pedidoController;
-    private static ProdutoController produtoController;
+    private final Scanner in = new Scanner(System.in);
+    private final ProdutoController produtoController;
+    private final PedidoController pedidoController;
 
-    public MenuPedidoView(PedidoController pedidoController, ProdutoController produtoController) {
-        MenuPedidoView.pedidoController = pedidoController;
-        MenuPedidoView.produtoController = produtoController;
+    public MenuPedidoView(ProdutoController produtoController, PedidoController pedidoController) {
+        this.produtoController = produtoController;
+        this.pedidoController = pedidoController;
     }
 
-    public static void exibirMenuPedido() {
+    public void exibirMenuProduto() {
         int opcao;
         do {
-            System.out.println("\n=== Carrinho de Compras ===");
-            System.out.println("1 - Ver carrinho");
-            System.out.println("2 - Adicionar produto");
-            System.out.println("3 - Remover produto");
-            System.out.println("4 - Finalizar compra");
-            System.out.println("5 - Ver histórico de pedidos");
+            System.out.println("\n=== Menu de Produtos ===");
+            System.out.println("1 - Ver produtos por categoria");
+            System.out.println("2 - Buscar produto por nome");
             System.out.println("0 - Voltar ao menu principal");
             System.out.print("Escolha uma opção: ");
 
@@ -36,19 +34,10 @@ public class MenuPedidoView {
 
             switch (opcao) {
                 case 1:
-                    exibirCarrinho();
+                    exibirProdutosPorCategoria();
                     break;
                 case 2:
-                    adicionarProdutoAoCarrinho();
-                    break;
-                case 3:
-                    removerProdutoDoCarrinho();
-                    break;
-                case 4:
-                    finalizarCompra();
-                    break;
-                case 5:
-                    exibirHistoricoPedidos();
+                    buscarProdutoPorNome();
                     break;
                 case 0:
                     System.out.println("Voltando ao menu principal...");
@@ -59,153 +48,101 @@ public class MenuPedidoView {
         } while (opcao != 0);
     }
 
-    private static void exibirCarrinho() {
-        List<ItemCarrinho> itensCarrinho = pedidoController.getItensCarrinho();
-        double total = pedidoController.calcularTotal();
+    private void exibirProdutosPorCategoria() {
+        System.out.println("\nCategorias disponíveis:");
+        System.out.println("1 - Premier League");
+        System.out.println("2 - La Liga");
+        System.out.println("3 - Seleções");
+        System.out.println("4 - Voltar");
+        System.out.print("Escolha uma categoria: ");
 
-        System.out.println("\n=== Seu Carrinho ===");
-        if (itensCarrinho.isEmpty()) {
-            System.out.println("Carrinho vazio.");
-            return;
-        }
-
-        for (ItemCarrinho item : itensCarrinho) {
-            Produto p = item.getProduto();
-            System.out.printf("- %s | %d x R$ %.2f = R$ %.2f%n",
-                    p.getNome(),
-                    item.getQuantidade(),
-                    p.getPreco(),
-                    (p.getPreco() * item.getQuantidade()));
-        }
-        System.out.println("-------------------");
-        System.out.printf("Total: R$ %.2f%n", total);
-    }
-
-    private static void adicionarProdutoAoCarrinho() {
-        System.out.println("\n=== Adicionar Produto ===");
-        System.out.print("Digite o código do produto: ");
-        String codigo = in.nextLine();
-
-        Produto produto = produtoController.buscarPorCodigo(codigo);
-        if (produto == null) {
-            System.out.println("Produto não encontrado.");
-            return;
-        }
-
-        System.out.println("Estoque disponível: " + produto.getEstoque());
-        System.out.print("Digite a quantidade: ");
-        int quantidade = Integer.parseInt(in.nextLine());
+        int opcaoCategoria;
         try {
-            if (quantidade <= 0) {
-                System.out.println(" Quantidade deve ser maior que zero.");
-                return;
-            }
-
-            if (quantidade > produto.getEstoque()) {
-                System.out.println(" Estoque insuficiente. Disponível: " + produto.getEstoque());
-                return;
-            }
-
-            if (pedidoController.adicionarItem(produto, quantidade)) {
-                System.out.printf(" %d x %s adicionado(s) ao carrinho.%n", quantidade, produto.getNome());
-            } else {
-                System.out.println(" Falha ao adicionar produto ao carrinho.");
-            }
-
+            opcaoCategoria = Integer.parseInt(in.nextLine());
         } catch (NumberFormatException e) {
-            System.out.println("Quantidade inválida. Digite um número inteiro.");
-        }
-    }
-
-    private static void removerProdutoDoCarrinho() {
-        System.out.println("\n=== Remover Produto ===");
-        exibirCarrinho();
-
-        if (pedidoController.getItensCarrinho().isEmpty()) {
-            return;
+            opcaoCategoria = -1;
         }
 
-        System.out.print("Digite o código do produto a ser removido: ");
-        String codigo = in.nextLine();
-
-        if (pedidoController.removerItem(codigo)) {
-            System.out.println("Produto removido do carrinho.");
-        } else {
-            System.out.println("Produto não encontrado no carrinho.");
-        }
-    }
-
-    private static void finalizarCompra() {
-        System.out.println("\n=== Finalizar Compra ===");
-        exibirCarrinho();
-
-        if (pedidoController.getItensCarrinho().isEmpty()) {
-            System.out.println("Carrinho vazio. Adicione produtos antes de finalizar.");
-            return;
-        }
-
-        System.out.println("\nSelecione a forma de pagamento:");
-        System.out.println("1 - " + FormaPagamento.CARTAO_CREDITO);
-        System.out.println("2 - " + FormaPagamento.PIX);
-        System.out.println("3 - " + FormaPagamento.BOLETO);
-        System.out.print("Opção: ");
-
-        int opcaoPagamento;
-        try {
-            opcaoPagamento = Integer.parseInt(in.nextLine());
-        } catch (NumberFormatException e) {
-            opcaoPagamento = -1;
-        }
-
-        FormaPagamento formaPagamento;
-        switch (opcaoPagamento) {
-            case 1:
-                formaPagamento = FormaPagamento.CARTAO_CREDITO;
-                break;
-            case 2:
-                formaPagamento = FormaPagamento.PIX;
-                break;
-            case 3:
-                formaPagamento = FormaPagamento.BOLETO;
-                break;
+        String categoria;
+        switch (opcaoCategoria) {
+            case 1: categoria = "Premier League"; break;
+            case 2: categoria = "La Liga"; break;
+            case 3: categoria = "Seleções"; break;
+            case 4: return;
             default:
-                System.out.println("Opção de pagamento inválida.");
+                System.out.println("Categoria inválida.");
                 return;
         }
 
-        Pedido pedido = pedidoController.finalizarPedido(formaPagamento);
-        if (pedido != null) {
-            System.out.println("\n=== Compra Finalizada ===");
-            System.out.println("Cliente: " + pedido.getCliente().getNome());
-            System.out.println("Forma de Pagamento: " + pedido.getFormaPagamento());
-            System.out.printf("Total: R$ %.2f%n", pedido.getTotal());
-            System.out.println("\nObrigado por comprar conosco!");
-        } else {
-            System.out.println("Erro ao finalizar o pedido.");
-        }
-    }
-
-    private static void exibirHistoricoPedidos() {
-        List<Pedido> historico = pedidoController.getHistoricoPedidos();
-
-        System.out.println("\n=== Histórico de Pedidos ===");
-        if (historico.isEmpty()) {
-            System.out.println("Nenhum pedido realizado ainda.");
+        List<Produto> produtos = produtoController.filtrarPorCategoria(categoria);
+        if (produtos.isEmpty()) {
+            System.out.println("Nenhum produto encontrado nesta categoria.");
             return;
         }
 
-        for (Pedido pedido : historico) {
-            System.out.println("\nCliente: " + pedido.getCliente().getNome());
-            System.out.println("Forma de Pagamento: " + pedido.getFormaPagamento());
-            System.out.printf("Total: R$ %.2f%n", pedido.getTotal());
-            System.out.println("Itens:");
-            for (ItemCarrinho item : pedido.getItens()) {
-                Produto p = item.getProduto();
-                System.out.printf("- %s | %d x R$ %.2f%n",
-                        p.getNome(),
-                        item.getQuantidade(),
-                        p.getPreco());
-            }
+        System.out.println("\nProdutos da categoria " + categoria + ":");
+        for (Produto produto : produtos) {
+            System.out.println("[" + produto.getCodigo() + "] " + produto.getNome() + " - R$ "
+                    + produto.getPreco() + " [Estoque: " + produto.getEstoque() + "]");
+        }
+
+        System.out.print("\nDigite o código do produto para adicionar ao carrinho (ou 0 para cancelar): ");
+        String codigo = in.nextLine();
+
+        if (codigo.equals("0")) return;
+
+        Produto selecionado = produtoController.buscarPorCodigo(codigo);
+        if (selecionado == null || !selecionado.getCategoria().equalsIgnoreCase(categoria)) {
+            System.out.println("Código inválido ou produto não pertence à categoria selecionada.");
+            return;
+        }
+
+        System.out.println("Produto selecionado: " + selecionado.getNome() + " - R$ " + selecionado.getPreco());
+        System.out.print("Digite a quantidade desse produto: ");
+
+        int quantidadeProduto;
+        try {
+            quantidadeProduto = Integer.parseInt(in.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Quantidade inválida.");
+            return;
+        }
+
+        if (quantidadeProduto <= 0 || quantidadeProduto > selecionado.getEstoque()) {
+            System.out.println("Quantidade inválida ou acima do estoque disponível.");
+            return;
+        }
+
+        System.out.print("Deseja adicionar ao carrinho? (s/n): ");
+        String confirmacao = in.nextLine();
+
+        if (confirmacao.equalsIgnoreCase("s")) {
+            pedidoController.adicionarItem(selecionado, quantidadeProduto);
+            produtoController.baixarEstoque(codigo, quantidadeProduto);
+
+            MenuCarrinhoView menuCarrinhoView = new MenuCarrinhoView(pedidoController, produtoController);
+            menuCarrinhoView.exibirMenuCarrinho();
+            System.out.println("Produto adicionado ao carrinho com sucesso!");
+        } else {
+            System.out.println("Operação cancelada.");
+        }
+    }
+
+    private void buscarProdutoPorNome() {
+        System.out.print("Digite o nome do produto que deseja buscar: ");
+        String nome = in.nextLine();
+
+        List<Produto> produtosEncontrados = produtoController.buscarPorNome(nome);
+
+        if (produtosEncontrados.isEmpty()) {
+            System.out.println("Nenhum produto encontrado com esse nome.");
+            return;
+        }
+
+        System.out.println("\nProdutos encontrados:");
+        for (Produto produto : produtosEncontrados) {
+            System.out.println("- " + produto.getNome() + " | Preço: R$ " + produto.getPreco() +
+                    " | Código: " + produto.getCodigo());
         }
     }
 }

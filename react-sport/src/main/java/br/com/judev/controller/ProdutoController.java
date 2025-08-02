@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 
 public class ProdutoController {
 
-    private static final Logger logger = Logger.getLogger(ProdutoController.class.getName());
     private final List<Produto> produtos = new ArrayList<>();
 
     public void carregarProdutos() {
@@ -48,7 +47,6 @@ public class ProdutoController {
         produtos.add(new Produto("S009", "Camisa Holanda 2024", "Camisa laranja vibrante", 259.90, 100, "Seleções"));
         produtos.add(new Produto("S010", "Camisa Uruguai 2024", "Camisa azul clara com detalhes pretos", 259.90, 90, "Seleções"));
     }
-
 
     public synchronized boolean baixarEstoque(String codigo, int quantidade) {
         Produto produto = buscarPorCodigo(codigo);
