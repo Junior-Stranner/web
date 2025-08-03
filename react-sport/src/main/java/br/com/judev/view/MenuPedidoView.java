@@ -119,7 +119,6 @@ public class MenuPedidoView {
 
         if (confirmacao.equalsIgnoreCase("s")) {
             pedidoController.adicionarItem(selecionado, quantidadeProduto);
-            produtoController.baixarEstoque(codigo, quantidadeProduto);
             MenuCarrinhoView menuCarrinhoView = new MenuCarrinhoView(pedidoController, produtoController);
             menuCarrinhoView.exibirMenuCarrinho();
             System.out.println("Produto adicionado ao carrinho com sucesso!");

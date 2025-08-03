@@ -51,7 +51,7 @@ public class MenuCarrinhoView {
                     exibirHistoricoPedidos();
                     break;
                 case 0:
-                    System.out.println("Voltando ao menu principal...");
+                    System.out.println("Voltar...");
                     return;
                 default:
                     System.out.println("Opção inválida. Por favor, tente novamente.");

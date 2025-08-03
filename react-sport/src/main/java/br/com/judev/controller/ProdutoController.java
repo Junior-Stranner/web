@@ -53,14 +53,27 @@ public class ProdutoController {
 
     public synchronized boolean baixarEstoque(String codigo, int quantidade) {
         Produto produto = buscarPorCodigo(codigo);
-
-        if (produto != null && produto.getEstoque() >= quantidade && quantidade > 0) {
-            produto.setEstoque(produto.getEstoque() - quantidade);
-            return true;
+        if (produto == null) {
+            System.out.println("Produto não encontrado para o código: " + codigo);
+            return false;
         }
-        return false;
-    }
 
+        if (quantidade <= 0) {
+            System.out.println("Quantidade inválida: " + quantidade);
+            return false;
+        }
+
+        int estoqueAtual = produto.getEstoque();
+        if (estoqueAtual < quantidade) {
+            System.out.println("Estoque insuficiente. Estoque atual: " + estoqueAtual + ", solicitado: " + quantidade);
+            return false;
+        }
+
+        produto.setEstoque(estoqueAtual - quantidade);
+        System.out.println("Estoque atualizado para o produto " + produto.getNome() +
+                ". Antes: " + estoqueAtual + ", depois: " + produto.getEstoque());
+        return true;
+    }
 
     public List<Produto> buscarPorNome(String nome) {
         List<Produto> resultado = new ArrayList<>();
