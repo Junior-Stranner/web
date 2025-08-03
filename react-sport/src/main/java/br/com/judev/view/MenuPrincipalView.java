@@ -13,6 +13,8 @@ public class MenuPrincipalView {
     private ClienteController clienteController;
     private PedidoController pedidoController;
 
+
+
     public MenuPrincipalView(ProdutoController produtoController, ClienteController clienteController , PedidoController pedidoController) {
         this.produtoController = produtoController;
         this.clienteController = clienteController;
@@ -71,10 +73,14 @@ public class MenuPrincipalView {
         System.out.print("Senha: ");
         String senha = in.nextLine();
 
-        if (clienteController.login(email, senha)) {
+        boolean logado = clienteController.login(email, senha);
+
+        if (logado) {
+            System.out.println("Login realizado com sucesso!");
             Cliente clienteLogado = clienteController.getClienteLogado();
             pedidoController.setClienteAtual(clienteLogado);
-            System.out.println("Login realizado com sucesso!");
+            MenuPedidoView menuPedidoView = new MenuPedidoView(produtoController, pedidoController);
+            menuPedidoView.exibirMenuProduto();
         } else {
             System.out.println("Email ou senha incorretos.");
         }

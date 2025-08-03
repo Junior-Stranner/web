@@ -184,6 +184,11 @@ public class MenuCarrinhoView {
         }
 
         Pedido pedido = pedidoController.finalizarPedido(formaPagamento);
+
+        if (pedido == null) {
+            System.out.println("Falha ao finalizar pedido. Verifique se o carrinho está vazio ou se há um cliente logado.");
+            return;
+        }
         System.out.println("Pedido confirmado!");
         for (ItemCarrinho item : pedido.getItens()) {
             System.out.printf("%s x%d - R$ %.2f%n", item.getProduto().getNome(), item.getQuantidade(), item.getProduto().getPreco());

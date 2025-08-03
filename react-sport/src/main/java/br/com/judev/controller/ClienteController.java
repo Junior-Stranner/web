@@ -16,15 +16,15 @@ public class ClienteController {
         return clienteLogado;
     }
 
-    public void cadastrarCliente(Cliente cliente){
-        if(buscarPorEmail(cliente.getEmail()) != null){
+    public void cadastrarCliente(Cliente cliente) {
+        if (buscarPorEmail(cliente.getEmail()) != null) {
             logger.warning("Tentativa de cadastro com email já existente: " + cliente.getEmail());
             return;
         }
         this.clientes.add(cliente);
-        logger.info("Cliente cadastrado com sucesso: " + cliente.getEmail());
-
+        System.out.println("Cadastro realizado com sucesso!");
     }
+
     public boolean login(String email, String senha) {
         Cliente cliente = buscarPorEmail(email);
         if (cliente != null && cliente.getSenha().equals(senha)) {
@@ -36,7 +36,7 @@ public class ClienteController {
 
     private Cliente buscarPorEmail(String email) {
         for (Cliente cliente : clientes) {
-            if (cliente.getEmail().equalsIgnoreCase(email)){
+            if (cliente.getEmail().equalsIgnoreCase(email)) {
                 return cliente;
             }
         }
