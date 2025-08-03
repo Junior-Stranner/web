@@ -59,6 +59,11 @@ public class PedidoController {
             return null;
         }
 
+        if (clienteAtual == null) {
+            System.out.println("Erro: Nenhum cliente logado.");
+            return null;
+        }
+
         for (ItemCarrinho item : carrinho) {
             Produto produto = item.getProduto();
             if (produto.getEstoque() < item.getQuantidade()) {
@@ -68,13 +73,13 @@ public class PedidoController {
                 return null;
             }
         }
-
         for (ItemCarrinho item : carrinho) {
             produtoController.baixarEstoque(item.getProduto().getCodigo(), item.getQuantidade());
         }
 
         double total = calcularTotal();
         Pedido pedido = new Pedido(clienteAtual, new ArrayList<>(carrinho), total, formaPagamento);
+
         historicoPedidos.add(pedido);
         carrinho.clear();
         return pedido;
