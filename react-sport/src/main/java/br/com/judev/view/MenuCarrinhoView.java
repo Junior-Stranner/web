@@ -83,6 +83,15 @@ public class MenuCarrinhoView {
 
     private void adicionarProdutoAoCarrinho() {
         System.out.println("\n=== Adicionar Produto ===");
+        produtoController.carregarProdutos();
+        List<Produto> produtos = produtoController.listarTodos();
+
+        System.out.println("Produtos disponíveis:");
+        for (Produto p : produtos) {
+            System.out.printf("- Código: %s | %s | Preço: R$ %.2f | Estoque: %d | Categoria: %s%n",
+                    p.getCodigo(), p.getNome(), p.getPreco(), p.getEstoque(), p.getCategoria());
+        }
+
         System.out.print("Digite o código do produto: ");
         String codigo = in.nextLine();
 
@@ -94,22 +103,24 @@ public class MenuCarrinhoView {
 
         System.out.println("Estoque disponível: " + produto.getEstoque());
         System.out.print("Digite a quantidade: ");
-        int quantidade = Integer.parseInt(in.nextLine());
+        int quantidade;
         try {
+            quantidade = Integer.parseInt(in.nextLine());
+
             if (quantidade <= 0) {
-                System.out.println(" Quantidade deve ser maior que zero.");
+                System.out.println("Quantidade deve ser maior que zero.");
                 return;
             }
 
             if (quantidade > produto.getEstoque()) {
-                System.out.println(" Estoque insuficiente. Disponível: " + produto.getEstoque());
+                System.out.println("Estoque insuficiente. Disponível: " + produto.getEstoque());
                 return;
             }
 
             if (pedidoController.adicionarItem(produto, quantidade)) {
-                System.out.printf(" %d x %s adicionado(s) ao carrinho.%n", quantidade, produto.getNome());
+                System.out.printf("%d x %s adicionado(s) ao carrinho.%n", quantidade, produto.getNome());
             } else {
-                System.out.println(" Falha ao adicionar produto ao carrinho.");
+                System.out.println("Falha ao adicionar produto ao carrinho.");
             }
 
         } catch (NumberFormatException e) {
@@ -173,15 +184,13 @@ public class MenuCarrinhoView {
         }
 
         Pedido pedido = pedidoController.finalizarPedido(formaPagamento);
-        if (pedido != null) {
-            System.out.println("\n=== Compra Finalizada ===");
-            System.out.println("Cliente: " + pedido.getCliente().getNome());
-            System.out.println("Forma de Pagamento: " + pedido.getFormaPagamento());
-            System.out.printf("Total: R$ %.2f%n", pedido.getTotal());
-            System.out.println("\nObrigado por comprar conosco!");
-        } else {
-            System.out.println("Erro ao finalizar o pedido.");
+        System.out.println("Pedido confirmado!");
+        for (ItemCarrinho item : pedido.getItens()) {
+            System.out.printf("%s x%d - R$ %.2f%n", item.getProduto().getNome(), item.getQuantidade(), item.getProduto().getPreco());
         }
+        System.out.println("Total: R$" + pedido.getTotal());
+        System.out.println("Forma de pagamento: " + pedido.getFormaPagamento());
+
     }
 
     private void exibirHistoricoPedidos() {
@@ -194,7 +203,10 @@ public class MenuCarrinhoView {
         }
 
         for (Pedido pedido : historico) {
-            System.out.println("\nCliente: " + pedido.getCliente().getNome());
+            Cliente cliente = pedido.getCliente();
+            String nome = (cliente != null) ? cliente.getNome() : "Desconhecido";
+
+            System.out.println("\nCliente: " + nome);
             System.out.println("Forma de Pagamento: " + pedido.getFormaPagamento());
             System.out.printf("Total: R$ %.2f%n", pedido.getTotal());
             System.out.println("Itens:");

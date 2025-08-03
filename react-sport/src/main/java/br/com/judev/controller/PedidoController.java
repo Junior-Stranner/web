@@ -26,7 +26,7 @@ public class PedidoController {
                         ". Estoque disponível: " + produto.getEstoque());
                 return false;
             }
-
+            produtoController.carregarProdutos();
             for (ItemCarrinho item : carrinho) {
                 if (item.getProduto().getCodigo().equals(produto.getCodigo())) {
                     int novaQuantidade = item.getQuantidade() + quantidade;

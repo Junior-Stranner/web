@@ -71,12 +71,10 @@ public class MenuPrincipalView {
         System.out.print("Senha: ");
         String senha = in.nextLine();
 
-        boolean logado = clienteController.login(email, senha);
-
-        if (logado) {
+        if (clienteController.login(email, senha)) {
+            Cliente clienteLogado = clienteController.getClienteLogado();
+            pedidoController.setClienteAtual(clienteLogado);
             System.out.println("Login realizado com sucesso!");
-            MenuPedidoView menuPedidoView = new MenuPedidoView(produtoController, pedidoController);
-            menuPedidoView.exibirMenuProduto();
         } else {
             System.out.println("Email ou senha incorretos.");
         }

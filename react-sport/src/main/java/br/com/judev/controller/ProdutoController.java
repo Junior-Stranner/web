@@ -11,6 +11,9 @@ public class ProdutoController {
     private final List<Produto> produtos = new ArrayList<>();
 
     public void carregarProdutos() {
+        if (!produtos.isEmpty()) {
+            return;
+        }
         // Premier League
         produtos.add(new Produto("P001", "Camisa Manchester United 23/24", "Camisa oficial da temporada 2023/24", 299.90, 120, "Premier League"));
         produtos.add(new Produto("P002", "Camisa Arsenal 23/24", "Camisa vermelha e branca com detalhes dourados", 279.90, 95, "Premier League"));
@@ -56,11 +59,6 @@ public class ProdutoController {
             return true;
         }
         return false;
-    }
-
-    public int verificarEstoque(String codigo) {
-        Produto produto = buscarPorCodigo(codigo);
-        return produto != null ? produto.getEstoque() : -1; // -1 = produto não existe
     }
 
 

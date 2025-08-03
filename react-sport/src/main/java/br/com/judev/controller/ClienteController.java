@@ -12,6 +12,10 @@ public class ClienteController {
     private final List<Cliente> clientes = new ArrayList<>();
     private Cliente clienteLogado;
 
+    public Cliente getClienteLogado() {
+        return clienteLogado;
+    }
+
     public void cadastrarCliente(Cliente cliente){
         if(buscarPorEmail(cliente.getEmail()) != null){
             logger.warning("Tentativa de cadastro com email já existente: " + cliente.getEmail());
@@ -24,11 +28,11 @@ public class ClienteController {
     public boolean login(String email, String senha) {
         Cliente cliente = buscarPorEmail(email);
         if (cliente != null && cliente.getSenha().equals(senha)) {
+            this.clienteLogado = cliente;
             return true;
         }
         return false;
     }
-
 
     private Cliente buscarPorEmail(String email) {
         for (Cliente cliente : clientes) {
