@@ -4,7 +4,6 @@ import br.com.judev.model.Produto;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class ProdutoController {
 
