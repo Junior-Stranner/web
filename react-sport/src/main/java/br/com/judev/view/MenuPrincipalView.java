@@ -14,7 +14,6 @@ public class MenuPrincipalView {
     private PedidoController pedidoController;
 
 
-
     public MenuPrincipalView(ProdutoController produtoController, ClienteController clienteController , PedidoController pedidoController) {
         this.produtoController = produtoController;
         this.clienteController = clienteController;
