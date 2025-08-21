@@ -2,7 +2,7 @@ package org.example.ExHerancaEncapsulamento.SistemaLanchonete;
 
 public abstract class Produto {
     private String nome;
-    private static double preco;
+    private double preco;
     private int estoque;
 
     public Produto(String nome, double preco, int estoque) {

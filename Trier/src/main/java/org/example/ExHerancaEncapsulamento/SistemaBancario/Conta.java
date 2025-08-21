@@ -1,5 +1,7 @@
 package org.example.ExHerancaEncapsulamento.SistemaBancario;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,31 +10,51 @@ public abstract class Conta {
     protected double saldo;
     protected boolean bloqueada = false;
     protected List<String> extrato = new ArrayList<>();
-    protected int numero;
-    protected int diasNegativos = 0;
+    protected LocalDate diasNegativo;
 
     public Conta(Cliente cliente) {
         this.cliente = cliente;
-        this.numero = diasNegativos++;
+        this.diasNegativo = null;
     }
 
-    public void depositar(double valor) {
-        if (valor > 0) {
-            saldo += valor;
-            System.out.println("Depósito de R$ " + valor);
-        } else {
-            System.out.println("Depósito inválido");
-        }
+    public double getSaldo() {
+        return saldo;
+    }
+
+    public void setDiasNegativo(LocalDate diasNegativo) {
+        this.diasNegativo = diasNegativo;
     }
 
     public abstract void sacar(double valor);
 
 
+    public void depositar(double valor) {
+        if (!bloqueada) {
+            if (valor > 0) {
+                saldo += valor;
+                extrato.add("Depósito de R$ " + valor);
+                System.out.println("Depósito de R$ " + valor);
+                if (saldo >= 0) {
+                    diasNegativo = LocalDate.now();
+                }
+            } else {
+                System.out.println("Depósito inválido");
+            }
+        } else {
+            System.out.println("Conta bloqueada. Operação não permitida.");
+        }
+    }
+
     public void transferir(double valor, Conta destino) {
         if (destino != null) {
             this.sacar(valor);
-            destino.depositar(valor);
-            System.out.println("Transferência de R$ " + valor + " para " + destino.cliente.getNome());
+            if(!bloqueada){
+                destino.depositar(valor);
+                extrato.add("Transferência de R$ " + valor + " para " + destino.cliente.getNome());
+                System.out.println("Transferência de R$ " + valor + " para " + destino.cliente.getNome());
+            }
+        } else {
+            System.out.println("Transferência não realizada. Conta bloqueada.");
         }
     }
 
@@ -44,18 +66,21 @@ public abstract class Conta {
         System.out.println("Saldo atual: R$ " + saldo);
     }
 
-    public void bloquear() {
+
+    public void verificarBloqueio() {
         if (saldo < 0) {
-            diasNegativos++;
-            if (diasNegativos > 30) {
-                bloqueada = true;
-                System.out.println("Conta bloqueada por saldo negativo por mais de 30 dias!");
+            if (diasNegativo == null) {
+                diasNegativo = LocalDate.now();
             } else {
-                System.out.println("Conta negativa há " + diasNegativos + " dias. Ainda não será bloqueada.");
+                long dias = ChronoUnit.DAYS.between(diasNegativo, LocalDate.now());
+                if (dias > 30) {
+                    bloqueada = true;
+                    extrato.add("Conta bloqueada por saldo negativo por mais de 30 dias.");
+                    System.out.println("Conta bloqueada por saldo negativo por mais de 30 dias!");
+                }
             }
         } else {
-            diasNegativos = 0;
+            diasNegativo = null;
         }
     }
-
 }

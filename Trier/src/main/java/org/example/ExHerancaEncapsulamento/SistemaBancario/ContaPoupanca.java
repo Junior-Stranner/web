@@ -8,25 +8,26 @@ public class ContaPoupanca extends Conta{
 
     @Override
     public void sacar(double valor) {
-        if (valor > 0 && !bloqueada) {
-            if (saldo >= valor) {
+        if (!bloqueada) {
+            if (valor > 0 && saldo >= valor) {
                 saldo -= valor;
+                extrato.add("Saque de R$ " + valor);
                 System.out.println("Saque de R$ " + valor);
             } else {
-                System.out.println("Saque negado: saldo insuficiente");
+                System.out.println("Saldo insuficiente!");
             }
+            verificarBloqueio();
         } else {
-            System.out.println("Saque inválido ou conta bloqueada");
+            System.out.println("Conta bloqueada. Operação não permitida.");
         }
     }
 
-    public void aplicarRendimento() {
-        if (!bloqueada) {
+    public void aplicarRendimentoMensal() {
+        if (!bloqueada && saldo > 0) {
             double rendimento = saldo * 0.05;
             saldo += rendimento;
-            System.out.println("Rendimento de R$ " + rendimento);
-        } else {
-            System.out.println("Conta bloqueada, rendimento não aplicado");
+            extrato.add("Rendimento mensal de R$ " + rendimento);
+            System.out.println("Rendimento mensal aplicado: R$ " + rendimento);
         }
     }
 }

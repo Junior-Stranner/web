@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 class Pedido {
-    private static int contador = 100;
+    private  int contador = 100;
     private int numero;
     private List<ItemPedido> itens = new ArrayList<>();
     private boolean cobrarServico;
