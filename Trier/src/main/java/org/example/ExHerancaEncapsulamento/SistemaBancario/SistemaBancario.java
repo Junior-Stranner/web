@@ -13,14 +13,10 @@ public class SistemaBancario {
         cc.depositar(1000);
         cc.setDiasNegativo(LocalDate.now().minusDays(35));
         cc.sacar(1200);
-        System.out.println("Total valor na conta: "+cc.getSaldo());
         cc.transferir(200, cp);
-        System.out.println("total valor na conta: "+cc.getSaldo());
 
         cp.depositar(300);
-        System.out.println("total valor na conta: "+cc.getSaldo());
         cp.aplicarRendimentoMensal();
-        System.out.println("total valor na conta: "+cc.getSaldo());
 
         cc.imprimirExtrato();
         cp.imprimirExtrato();
